@@ -1,0 +1,45 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+  msTimer t;
+  int flag=1;
+}
+on timer t{
+  if(flag==1)
+{
+ @headlight::syshead=1;
+  flag=0;
+}
+else
+{
+ @headlight::syshead=0;
+  flag=1;
+}
+settimer(t,8);
+}
+on message 123
+{
+ if(this.rtr==0)
+{ 
+ write("Node B:DF Received:");
+  if(this.byte(0)==0xaa)
+  {
+   settimer(t,8);
+  }
+  else if(this.byte(0)==0xbb)
+  {
+   @headlight::syshead=0;
+    cancelTimer(t);
+    }
+}
+else
+{
+write("Node B:Remote frame Received:");
+}
+}
+
